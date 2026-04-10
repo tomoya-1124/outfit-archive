@@ -2,20 +2,30 @@
 
 import { useEffect, useState } from "react";
 import OutfitCard from "@/components/OutfitCard";
-import { initialOutfits, Outfit } from "@/lib/dummy-data";
+import { Outfit } from "@/lib/dummy-data";
+import { supabase } from "@/lib/supabase";
 
 export default function OutfitsPage() {
   const [outfits, setOutfits] = useState<Outfit[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedOutfits = localStorage.getItem("outfits");
+    const fetchOutfits = async () => {
+      const { data, error } = await supabase
+        .from("outfits")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    if (savedOutfits) {
-      setOutfits(JSON.parse(savedOutfits));
-    } else {
-      setOutfits(initialOutfits);
-      localStorage.setItem("outfits", JSON.stringify(initialOutfits));
-    }
+      if (error) {
+        console.error("一覧取得エラー:", error);
+      } else {
+        setOutfits(data || []);
+      }
+
+      setLoading(false);
+    };
+
+    fetchOutfits();
   }, []);
 
   return (
@@ -24,16 +34,20 @@ export default function OutfitsPage() {
         <div className="mb-10 space-y-3">
           <p className="text-sm tracking-[0.3em] text-white/40">ARCHIVE</p>
           <h1 className="text-4xl font-bold tracking-tight">Outfits</h1>
-          <p className="text-white/60">
-            記録したコーデを一覧で確認できます。
-          </p>
+          <p className="text-white/60">記録したコーデを一覧で確認できます。</p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {outfits.map((outfit) => (
-            <OutfitCard key={outfit.id} outfit={outfit} />
-          ))}
-        </div>
+        {loading ? (
+          <p className="text-white/60">読み込み中...</p>
+        ) : outfits.length === 0 ? (
+          <p className="text-white/60">まだコーデがありません。</p>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {outfits.map((outfit) => (
+              <OutfitCard key={outfit.id} outfit={outfit} />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Outfit } from "@/lib/dummy-data";
+import { Outfit } from "../lib/dummy-data";
 
 type Props = {
   outfit: Outfit;
@@ -13,7 +13,10 @@ export default function OutfitCard({ outfit }: Props) {
     >
       <div className="aspect-[4/5] w-full overflow-hidden bg-black">
         <img
-          src={outfit.imageUrl}
+          src={
+            outfit.image_url ||
+            "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80"
+          }
           alt={outfit.title}
           className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
         />

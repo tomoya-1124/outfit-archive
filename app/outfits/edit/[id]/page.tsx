@@ -1,50 +1,89 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Outfit } from "@/lib/dummy-data";
 import { supabase } from "@/lib/supabase";
 
-export default function NewOutfitPage() {
+export default function EditOutfitPage() {
+  const params = useParams();
   const router = useRouter();
+  const id = params.id as string;
 
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [brand, setBrand] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [memo, setMemo] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOutfit = async () => {
+      const { data, error } = await supabase
+        .from("outfits")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error || !data) {
+        alert("対象のコーデが見つかりませんでした。");
+        router.push("/outfits");
+        return;
+      }
+
+      const outfit: Outfit = data;
+      setTitle(outfit.title);
+      setDate(outfit.date);
+      setBrand(outfit.brand);
+      setImageUrl(outfit.image_url || "");
+      setMemo(outfit.memo || "");
+      setLoading(false);
+    };
+
+    fetchOutfit();
+  }, [id, router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { error } = await supabase.from("outfits").insert([
-      {
+    const { error } = await supabase
+      .from("outfits")
+      .update({
         title,
         date,
         brand,
-        image_url:
-          imageUrl ||
-          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80",
+        image_url: imageUrl,
         memo,
-      },
-    ]);
+      })
+      .eq("id", id);
 
     if (error) {
-      console.error("登録エラー:", error);
-      alert("登録に失敗しました。");
+      console.error("更新エラー:", error);
+      alert("更新に失敗しました。");
       return;
     }
 
-    router.push("/outfits");
+    router.push(`/outfits/${id}`);
     router.refresh();
   };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-neutral-950 text-white">
+        <section className="mx-auto max-w-3xl px-6 py-16">
+          <p>読み込み中...</p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
       <section className="mx-auto max-w-3xl px-6 py-16">
         <div className="mb-10 space-y-3">
-          <p className="text-sm tracking-[0.3em] text-white/40">NEW RECORD</p>
-          <h1 className="text-4xl font-bold tracking-tight">新規コーデ登録</h1>
-          <p className="text-white/60">まずはシンプルな形で記録できればOK。</p>
+          <p className="text-sm tracking-[0.3em] text-white/40">EDIT RECORD</p>
+          <h1 className="text-4xl font-bold tracking-tight">コーデ編集</h1>
+          <p className="text-white/60">登録済みの内容を更新します。</p>
         </div>
 
         <form
@@ -119,12 +158,21 @@ export default function NewOutfitPage() {
             />
           </div>
 
-          <button
-            type="submit"
-            className="rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-85"
-          >
-            登録する
-          </button>
+          <div className="flex gap-3">
+            <button
+              type="submit"
+              className="rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-85"
+            >
+              更新する
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push(`/outfits/${id}`)}
+              className="rounded-full border border-white/15 px-5 py-3 text-sm text-white transition hover:bg-white/10"
+            >
+              キャンセル
+            </button>
+          </div>
         </form>
       </section>
     </main>
