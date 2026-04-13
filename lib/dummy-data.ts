@@ -6,4 +6,7 @@ export type Outfit = {
   image_url: string | null;
   memo: string | null;
   created_at: string;
+  user_id: string;
+  is_public: boolean;
+  share_id: string;
 };

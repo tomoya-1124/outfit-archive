@@ -64,6 +64,7 @@ export default function OutfitDetailPage() {
     );
   }
 
+  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/share/${outfit.share_id}`;
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
       <section className="mx-auto max-w-6xl px-6 py-16">
@@ -76,6 +77,13 @@ export default function OutfitDetailPage() {
           </Link>
 
           <div className="flex gap-3">
+            <button
+              onClick={() => navigator.clipboard.writeText(shareUrl)}
+              className="rounded-full border border-white/15 px-4 py-2 text-sm text-white transition hover:bg-white/10"
+            >
+              https://outfit-archive.vercel.app
+            </button>
+
             <button
               onClick={() => router.push(`/outfits/edit/${id}`)}
               className="rounded-full border border-white/15 px-4 py-2 text-sm text-white transition hover:bg-white/10"

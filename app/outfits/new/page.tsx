@@ -14,6 +14,8 @@ export default function NewOutfitPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  const [isPublic, setIsPublic] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setUploading(true);
@@ -62,6 +64,7 @@ export default function NewOutfitPage() {
         image_url: imageUrl || null,
         memo,
         user_id: user.id,
+        is_public: isPublic,
       },
     ]);
 
@@ -158,6 +161,17 @@ export default function NewOutfitPage() {
               rows={5}
               className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none focus:border-white/30"
             />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+            <label className="text-sm text-white/70">
+              このコーデを公開する
+            </label>
           </div>
 
           <button
