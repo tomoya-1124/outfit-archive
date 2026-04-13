@@ -18,6 +18,17 @@ export default function NewOutfitPage() {
     e.preventDefault();
     setUploading(true);
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      alert("投稿するにはログインが必要です。");
+      setUploading(false);
+      router.push("/login");
+      return;
+    }
+
     let imageUrl = "";
 
     if (imageFile) {
@@ -50,6 +61,7 @@ export default function NewOutfitPage() {
         brand,
         image_url: imageUrl || null,
         memo,
+        user_id: user.id,
       },
     ]);
 
