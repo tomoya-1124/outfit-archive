@@ -39,12 +39,12 @@ export default function Header() {
 
   return (
     <header className="border-b border-white/10 bg-black/70 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4 text-white">
-        <Link href="/" className="text-sm tracking-[0.3em] text-white/80">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 text-white sm:px-6">
+        <Link href="/" className="text-xs tracking-[0.28em] text-white/80">
           OUTFIT ARCHIVE
         </Link>
 
-        <nav className="flex flex-wrap items-center gap-4 text-sm text-white/60">
+        <nav className="flex flex-wrap items-center gap-3 text-sm text-white/60 sm:gap-4">
           <Link href="/" className="hover:text-white">
             Home
           </Link>
