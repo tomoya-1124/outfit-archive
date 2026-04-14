@@ -124,42 +124,43 @@ export default function OutfitDetailPage() {
             </button>
           </div>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-            <img
-              src={
-                outfit.image_url ||
-                "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80"
-              }
-              alt={outfit.title}
-              className="h-full w-full object-cover"
-            />
-          </div>
-
-          <div className="space-y-6">
-            <div>
-              <p className="text-sm tracking-[0.2em] text-white/40">
-                {outfit.date}
-              </p>
-              <h1 className="mt-3 text-4xl font-bold">{outfit.title}</h1>
+          <div className="mt-8 grid gap-10 lg:grid-cols-2">
+            <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+              <img
+                src={
+                  outfit.image_url ||
+                  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80"
+                }
+                alt={outfit.title}
+                className="h-full w-full object-cover"
+              />
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-white/45">ブランド</p>
-                <p className="mt-2 text-lg font-medium">{outfit.brand}</p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-white/45">作成日時</p>
-                <p className="mt-2 text-lg font-medium">
-                  {new Date(outfit.created_at).toLocaleDateString("ja-JP")}
+            <div className="space-y-6">
+              <div>
+                <p className="text-sm tracking-[0.2em] text-white/40">
+                  {outfit.date}
                 </p>
+                <h1 className="mt-3 text-4xl font-bold">{outfit.title}</h1>
               </div>
-            </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-              <p className="text-sm text-white/45">メモ</p>
-              <p className="mt-3 leading-7 text-white/75">{outfit.memo}</p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-sm text-white/45">ブランド</p>
+                  <p className="mt-2 text-lg font-medium">{outfit.brand}</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-sm text-white/45">作成日時</p>
+                  <p className="mt-2 text-lg font-medium">
+                    {new Date(outfit.created_at).toLocaleDateString("ja-JP")}
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                <p className="text-sm text-white/45">メモ</p>
+                <p className="mt-3 leading-7 text-white/75">{outfit.memo}</p>
+              </div>
             </div>
           </div>
         </div>
