@@ -6,20 +6,20 @@ const supabase = createClient(
 );
 
 type Props = {
-  params: Promise<{
+  params: {
     id: string;
-  }>;
+  };
 };
 
 export default async function SharePage({ params }: Props) {
-  const { id } = await params;
+  const { id } = params;
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("outfits")
     .select("*")
     .eq("share_id", id)
     .eq("is_public", true)
-    .single();
+    .maybeSingle();
 
   if (!data) {
     return (
