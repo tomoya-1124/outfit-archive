@@ -91,6 +91,8 @@ npm run dev
 docker compose up --build
 ```
 
+---
+
 ## Environment Variables
 
 .env.example を参考に .env.local を作成してください。
@@ -99,6 +101,8 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
+---
+
 ## Public Share Function
 
 公開設定されたコーデは共有URLで閲覧できます。
@@ -106,6 +110,8 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 例: /share/{share_id}
 
 非公開コーデは共有URLからアクセスできません。
+
+---
 
 ## Background
 
@@ -119,6 +125,8 @@ WEARのような「ファッションログ体験」を、
 
 を目的として開発しました。
 
+---
+
 ## Future Improvements
 
 ・OGP対応（SNSシェア強化）
@@ -127,6 +135,8 @@ WEARのような「ファッションログ体験」を、
 ・タグ機能
 ・並び替え機能
 ・UIブラッシュアップ
+
+---
 
 ## Author
 
