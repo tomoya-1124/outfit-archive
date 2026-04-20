@@ -17,19 +17,19 @@
 
 ### Home
 
-![Home](./public/readme/home.png)
+![Home](public/readme/home.png)
 
 ### Outfits
 
-![Outfits](./public/readme/outfits.png)
+![Outfits](public/readme/outfits.png)
 
 ### Detail
 
-![Detail](./public/readme/detail.png)
+![Detail](public/readme/detail.png)
 
 ### Share Page
 
-![Share](./public/readme/share.png)
+![Share](public/readme/share.png)
 
 ---
 
@@ -83,7 +83,9 @@ npm install
 npm run dev
 ```
 
-- アプリ起動後: http://localhost:3000
+アプリ起動後:
+
+http://localhost:3000
 
 ### 起動方法（Dockerあり）
 
@@ -100,14 +102,13 @@ docker compose up --build
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
-
----
-
-## Public Share Function
+Public Share Function
 
 公開設定されたコーデは共有URLで閲覧できます。
 
-例: /share/{share_id}
+例:
+
+/share/{share_id}
 
 非公開コーデは共有URLからアクセスできません。
 
@@ -118,23 +119,20 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 WEARのような「ファッションログ体験」を、
 自分専用にシンプル化して再構築した個人開発アプリです。
 
-・日々の服装記録
-・スタイリングの振り返り
-・季節ごとの傾向確認
-・お気に入りコーデの共有
+日々の服装記録
+スタイリングの振り返り
+季節ごとの傾向確認
+お気に入りコーデの共有
 
 を目的として開発しました。
 
----
-
-## Future Improvements
-
-・OGP対応（SNSシェア強化）
-・公開コーデ一覧ページ
-・ブランド検索
-・タグ機能
-・並び替え機能
-・UIブラッシュアップ
+Future Improvements
+OGP対応の最適化
+公開コーデ一覧ページ
+ブランド検索
+タグ機能
+並び替え機能
+UIブラッシュアップ
 
 ---
 
