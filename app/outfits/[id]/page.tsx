@@ -12,9 +12,21 @@ export default function OutfitDetailPage() {
   const id = params.id as string;
 
   const [outfit, setOutfit] = useState<Outfit | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOutfit = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+
+      setCurrentUserId(user.id);
+
       const { data, error } = await supabase
         .from("outfits")
         .select("*")
@@ -24,13 +36,19 @@ export default function OutfitDetailPage() {
       if (error) {
         console.error("詳細取得エラー:", error);
         setOutfit(null);
-      } else {
-        setOutfit(data);
+        return;
       }
+
+      if (data.user_id !== user.id) {
+        setOutfit(null);
+        return;
+      }
+
+      setOutfit(data);
     };
 
     fetchOutfit();
-  }, [id]);
+  }, [id, router]);
 
   if (!outfit) {
     return (
@@ -48,6 +66,7 @@ export default function OutfitDetailPage() {
     );
   }
 
+  const isOwner = currentUserId === outfit.user_id;
   const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/share/${outfit.share_id}`;
 
   const handleDelete = async () => {
@@ -77,53 +96,55 @@ export default function OutfitDetailPage() {
             ← 一覧へ戻る
           </Link>
 
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={async () => {
-                const { error } = await supabase
-                  .from("outfits")
-                  .update({ is_public: !outfit.is_public })
-                  .eq("id", outfit.id);
-
-                if (error) {
-                  console.error("公開設定更新エラー:", error);
-                  alert("公開設定の更新に失敗しました。");
-                  return;
-                }
-
-                setOutfit({ ...outfit, is_public: !outfit.is_public });
-              }}
-              className="rounded-full border border-white/15 px-4 py-2 text-sm text-white transition hover:bg-white/10"
-            >
-              {outfit.is_public ? "非公開にする" : "公開にする"}
-            </button>
-
-            {outfit.is_public && (
+          {isOwner && (
+            <div className="flex flex-wrap gap-3">
               <button
-                onClick={() => {
-                  navigator.clipboard.writeText(shareUrl);
-                  alert("共有URLをコピーしました。");
+                onClick={async () => {
+                  const { error } = await supabase
+                    .from("outfits")
+                    .update({ is_public: !outfit.is_public })
+                    .eq("id", outfit.id);
+
+                  if (error) {
+                    console.error("公開設定更新エラー:", error);
+                    alert("公開設定の更新に失敗しました。");
+                    return;
+                  }
+
+                  setOutfit({ ...outfit, is_public: !outfit.is_public });
                 }}
                 className="rounded-full border border-white/15 px-4 py-2 text-sm text-white transition hover:bg-white/10"
               >
-                共有URLコピー
+                {outfit.is_public ? "非公開にする" : "公開にする"}
               </button>
-            )}
 
-            <button
-              onClick={() => router.push(`/outfits/edit/${id}`)}
-              className="rounded-full border border-white/15 px-4 py-2 text-sm text-white transition hover:bg-white/10"
-            >
-              編集する
-            </button>
+              {outfit.is_public && (
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(shareUrl);
+                    alert("共有URLをコピーしました。");
+                  }}
+                  className="rounded-full border border-white/15 px-4 py-2 text-sm text-white transition hover:bg-white/10"
+                >
+                  共有URLコピー
+                </button>
+              )}
 
-            <button
-              onClick={handleDelete}
-              className="rounded-full border border-red-400/30 px-4 py-2 text-sm text-red-300 transition hover:bg-red-400/10"
-            >
-              削除する
-            </button>
-          </div>
+              <button
+                onClick={() => router.push(`/outfits/edit/${id}`)}
+                className="rounded-full border border-white/15 px-4 py-2 text-sm text-white transition hover:bg-white/10"
+              >
+                編集する
+              </button>
+
+              <button
+                onClick={handleDelete}
+                className="rounded-full border border-red-400/30 px-4 py-2 text-sm text-red-300 transition hover:bg-red-400/10"
+              >
+                削除する
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-2">
