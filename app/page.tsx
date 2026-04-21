@@ -6,6 +6,9 @@ import OutfitCard from "@/components/OutfitCard";
 import { Outfit } from "@/lib/dummy-data";
 import { supabase } from "@/lib/supabase";
 
+const fallbackImage =
+  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80";
+
 export default function HomePage() {
   const [outfits, setOutfits] = useState<Outfit[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,41 +32,89 @@ export default function HomePage() {
     fetchOutfits();
   }, []);
 
-  const recentOutfits = outfits.slice(0, 2);
+  const recentOutfits = outfits.slice(0, 3);
   const latestOutfit = outfits[0];
 
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="mb-14 max-w-3xl space-y-6">
-          <p className="text-sm tracking-[0.3em] text-white/40">
-            PERSONAL FASHION LOG
-          </p>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            OUTFIT ARCHIVE
-          </h1>
-          <p className="max-w-2xl text-base leading-7 text-white/65 sm:text-lg">
-            日々のコーデを静かに蓄積していく、自分用のアーカイブ。
-            見せるためというより、残すための服ログ。
-          </p>
+      <section className="mx-auto max-w-[1400px] px-6 py-16">
+        <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="mb-6 max-w-4xl space-y-6">
+            <p className="text-sm tracking-[0.3em] text-white/40">
+              PERSONAL FASHION LOG
+            </p>
 
-          <div className="flex flex-wrap gap-4 pt-2">
-            <Link
-              href="/outfits"
-              className="rounded-full border border-white/15 px-5 py-3 text-sm text-white transition hover:bg-white hover:text-black"
-            >
-              コーデ一覧を見る
-            </Link>
-            <Link
-              href="/outfits/new"
-              className="rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-85"
-            >
-              新しく記録する
-            </Link>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+              OUTFIT ARCHIVE
+            </h1>
+
+            <p className="max-w-3xl text-base leading-7 text-white/65 sm:text-lg">
+              日々のコーデを静かに蓄積していく、自分用のアーカイブ。
+              見せるためというより、残すための服ログ。
+              公開したコーデは共有ページから外部にも見せることができます。
+            </p>
+
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link
+                href="/outfits"
+                className="rounded-full border border-white/15 px-5 py-3 text-sm text-white transition hover:bg-white hover:text-black"
+              >
+                コーデ一覧を見る
+              </Link>
+
+              <Link
+                href="/public"
+                className="rounded-full border border-white/15 px-5 py-3 text-sm text-white transition hover:bg-white/10"
+              >
+                公開コーデを見る
+              </Link>
+
+              <Link
+                href="/outfits/new"
+                className="rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition hover:opacity-85"
+              >
+                新しく記録する
+              </Link>
+            </div>
+          </div>
+
+          <div className="hidden lg:block">
+            <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+              <div className="aspect-[4/5] w-full overflow-hidden bg-black">
+                <img
+                  src={latestOutfit?.image_url || fallbackImage}
+                  alt={latestOutfit?.title || "latest outfit"}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+
+              <div className="space-y-3 p-6">
+                <p className="text-sm tracking-[0.2em] text-white/40">
+                  LATEST LOOK
+                </p>
+                <h2 className="text-3xl font-semibold tracking-tight">
+                  {loading
+                    ? "読み込み中..."
+                    : latestOutfit?.title || "No Outfit"}
+                </h2>
+                <p className="text-white/70">
+                  {loading ? "..." : latestOutfit?.brand || "-"}
+                </p>
+
+                {latestOutfit && (
+                  <Link
+                    href={`/outfits/${latestOutfit.id}`}
+                    className="inline-block pt-2 text-sm text-white/60 transition hover:text-white"
+                  >
+                    詳細を見る →
+                  </Link>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="mb-10 grid gap-4 sm:grid-cols-3">
+        <div className="mb-10 mt-10 grid gap-4 sm:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
             <p className="text-sm text-white/45">総コーデ数</p>
             <p className="mt-2 text-3xl font-semibold">
