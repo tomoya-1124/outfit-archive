@@ -45,11 +45,15 @@ export default function OutfitsPage() {
   }, []);
 
   const filteredOutfits = useMemo(() => {
-    return outfits.filter((outfit) =>
-      outfit.brand.toLowerCase().includes(brandQuery.toLowerCase()),
-    );
-  }, [outfits, brandQuery]);
+    const query = brandQuery.toLowerCase();
 
+    return outfits.filter((outfit) => {
+      return (
+        outfit.brand.toLowerCase().includes(query) ||
+        (outfit.tags ?? "").toLowerCase().includes(query)
+      );
+    });
+  }, [outfits, brandQuery]);
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
       <section className="mx-auto max-w-6xl px-6 py-16">
