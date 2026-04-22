@@ -1,8 +1,9 @@
 # OUTFIT ARCHIVE
 
 自分専用のファッションコーデ記録アプリです。  
-日々のコーデを画像付きで保存し、一覧・詳細で振り返ることができます。  
-公開 / 非公開の切り替えや、共有URLによる公開ページ表示にも対応しています。
+日々のコーデを画像付きで保存し、一覧・詳細で振り返ることができます。
+
+公開 / 非公開の切り替え、共有URL発行、タグ管理、検索機能にも対応しています。
 
 ---
 
@@ -10,6 +11,8 @@
 
 - 本番環境（Vercel）  
   https://outfit-archive.vercel.app
+- 公開コーデ一覧  
+  https://outfit-archive.vercel.app/public
 
 ---
 
@@ -31,20 +34,51 @@
 
 ![Share](public/readme/share.png)
 
+### Public Page
+
+![Public](public/readme/public.png)
+
 ---
 
 ## Features
 
+### 認証
+
 - ユーザー登録 / ログイン（Supabase Auth）
+- ログインユーザーのみ一覧閲覧可能
+- 所有者のみ編集 / 削除可能
+
+### コーデ管理
+
 - コーデ新規登録
-- 画像アップロード（Supabase Storage）
-- コーデ一覧表示
-- コーデ詳細表示
 - コーデ編集
 - コーデ削除
+- 一覧表示
+- 詳細表示
+
+### 画像
+
+- 画像アップロード（Supabase Storage）
+
+### 公開機能
+
 - 公開 / 非公開切り替え
 - 共有URL発行
-- スマホブラウザ対応（レスポンシブ）
+- `/share/[share_id]` で公開ページ表示
+- `/public` で公開コーデ一覧表示
+
+### 検索 / 分類
+
+- ブランド検索
+- タグ登録
+- タグ表示
+- タグ検索
+
+### UI
+
+- レスポンシブ対応（スマホブラウザ）
+- ダークモードUI
+- ミニマルデザイン
 
 ---
 
@@ -102,7 +136,10 @@ docker compose up --build
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
-Public Share Function
+
+---
+
+## Public Share Function
 
 公開設定されたコーデは共有URLで閲覧できます。
 
