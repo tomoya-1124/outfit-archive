@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import OutfitCard from "@/components/OutfitCard";
 import { Outfit } from "@/lib/dummy-data";
 import { supabase } from "@/lib/supabase";
@@ -10,6 +10,7 @@ export default function OutfitsPage() {
   const [outfits, setOutfits] = useState<Outfit[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [brandQuery, setBrandQuery] = useState("");
 
   useEffect(() => {
     const fetchOutfits = async () => {
@@ -43,6 +44,12 @@ export default function OutfitsPage() {
     fetchOutfits();
   }, []);
 
+  const filteredOutfits = useMemo(() => {
+    return outfits.filter((outfit) =>
+      outfit.brand.toLowerCase().includes(brandQuery.toLowerCase()),
+    );
+  }, [outfits, brandQuery]);
+
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
       <section className="mx-auto max-w-6xl px-6 py-16">
@@ -51,6 +58,24 @@ export default function OutfitsPage() {
           <h1 className="text-4xl font-bold tracking-tight">Outfits</h1>
           <p className="text-white/60">記録したコーデを一覧で確認できます。</p>
         </div>
+
+        {!loading && isLoggedIn && (
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="w-full sm:max-w-sm">
+              <input
+                type="text"
+                value={brandQuery}
+                onChange={(e) => setBrandQuery(e.target.value)}
+                placeholder="ブランド名で検索"
+                className="w-full rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-white/30"
+              />
+            </div>
+
+            <p className="text-sm text-white/45">
+              {filteredOutfits.length}件表示
+            </p>
+          </div>
+        )}
 
         {loading ? (
           <p className="text-white/60">読み込み中...</p>
@@ -64,11 +89,15 @@ export default function OutfitsPage() {
               ログインへ
             </Link>
           </div>
-        ) : outfits.length === 0 ? (
-          <p className="text-white/60">まだコーデがありません。</p>
+        ) : filteredOutfits.length === 0 ? (
+          <p className="text-white/60">
+            {brandQuery
+              ? "該当するブランドのコーデがありません。"
+              : "まだコーデがありません。"}
+          </p>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {outfits.map((outfit) => (
+            {filteredOutfits.map((outfit) => (
               <OutfitCard key={outfit.id} outfit={outfit} />
             ))}
           </div>
