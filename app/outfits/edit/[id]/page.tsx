@@ -15,6 +15,7 @@ export default function EditOutfitPage() {
   const [brand, setBrand] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [memo, setMemo] = useState("");
+  const [tags, setTags] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function EditOutfitPage() {
       setBrand(outfit.brand);
       setImageUrl(outfit.image_url || "");
       setMemo(outfit.memo || "");
+      setTags(outfit.tags || "");
       setLoading(false);
     };
 
@@ -54,6 +56,7 @@ export default function EditOutfitPage() {
         brand,
         image_url: imageUrl,
         memo,
+        tags,
       })
       .eq("id", id);
 
@@ -130,6 +133,23 @@ export default function EditOutfitPage() {
               className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none focus:border-white/30"
               required
             />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="tags" className="text-sm text-white/70">
+              タグ
+            </label>
+            <input
+              id="tags"
+              type="text"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              placeholder="street, black, summer"
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none placeholder:text-white/30 focus:border-white/30"
+            />
+            <p className="text-xs text-white/40">
+              カンマ区切りで入力（例: street, black, summer）
+            </p>
           </div>
 
           <div className="space-y-2">

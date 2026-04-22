@@ -9,4 +9,5 @@ export type Outfit = {
   user_id: string;
   is_public: boolean;
   share_id: string;
+  tags: string | null;
 };

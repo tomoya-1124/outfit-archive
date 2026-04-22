@@ -32,9 +32,14 @@ export default function PublicPage() {
   }, []);
 
   const filteredOutfits = useMemo(() => {
-    return outfits.filter((outfit) =>
-      outfit.brand.toLowerCase().includes(brandQuery.toLowerCase()),
-    );
+    const query = brandQuery.toLowerCase();
+
+    return outfits.filter((outfit) => {
+      return (
+        outfit.brand.toLowerCase().includes(query) ||
+        (outfit.tags ?? "").toLowerCase().includes(query)
+      );
+    });
   }, [outfits, brandQuery]);
 
   const featuredOutfit = filteredOutfits[0];

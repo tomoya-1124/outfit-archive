@@ -29,6 +29,15 @@ export default function PublicOutfitCard({ outfit }: Props) {
         <p className="line-clamp-2 text-sm text-white/50">
           {outfit.memo || "メモはありません。"}
         </p>
+
+        {outfit.tags && (
+          <p className="line-clamp-2 text-xs text-white/35">
+            {outfit.tags
+              .split(",")
+              .map((tag) => `#${tag.trim()}`)
+              .join(" ")}
+          </p>
+        )}
       </div>
     </Link>
   );

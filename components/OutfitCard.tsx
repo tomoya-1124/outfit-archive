@@ -27,6 +27,17 @@ export default function OutfitCard({ outfit }: Props) {
         <h2 className="text-lg font-semibold text-white">{outfit.title}</h2>
         <p className="text-sm text-white/70">{outfit.brand}</p>
         <p className="line-clamp-2 text-sm text-white/50">{outfit.memo}</p>
+
+        <p className="line-clamp-2 text-sm text-white/50">{outfit.memo}</p>
+
+        {outfit.tags && (
+          <p className="line-clamp-2 text-xs text-white/35">
+            {outfit.tags
+              .split(",")
+              .map((tag) => `#${tag.trim()}`)
+              .join(" ")}
+          </p>
+        )}
       </div>
     </Link>
   );
