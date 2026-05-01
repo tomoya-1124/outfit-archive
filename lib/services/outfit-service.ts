@@ -1,6 +1,78 @@
-import { LocalOutfitRepository } from "@/features/outfits/repositories/local-outfit-repository";
-import { OutfitRepository } from "@/features/outfits/repositories/outfit-repository";
+import { mockOutfits } from "@/lib/mock-outfits";
+import { Outfit, OutfitFilter, OutfitInput } from "@/types/outfit";
 
-const repository: OutfitRepository = new LocalOutfitRepository();
+const STORAGE_KEY = "outfit-archive-v3";
 
-export const outfitService = repository;
+const isBrowser = () => typeof window !== "undefined";
+
+const read = (): Outfit[] => {
+  if (!isBrowser()) return mockOutfits;
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored) return mockOutfits;
+  try {
+    return JSON.parse(stored) as Outfit[];
+  } catch {
+    return mockOutfits;
+  }
+};
+
+const write = (outfits: Outfit[]) => {
+  if (!isBrowser()) return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(outfits));
+};
+
+export const outfitService = {
+  list(filter?: OutfitFilter) {
+    const outfits = read();
+    if (!filter) return outfits;
+
+    return outfits.filter((item) => {
+      const q = (filter.query ?? "").toLowerCase();
+      const brand = (filter.brand ?? "").toLowerCase();
+
+      const matchQuery =
+        !q ||
+        item.title.toLowerCase().includes(q) ||
+        item.description.toLowerCase().includes(q) ||
+        item.tags.some((tag) => tag.toLowerCase().includes(q));
+
+      const matchBrand = !brand || item.brand.toLowerCase().includes(brand);
+      const matchSeason = !filter.season || filter.season === "ALL" || item.season === filter.season;
+      const matchVisibility =
+        !filter.visibility || filter.visibility === "ALL" || item.visibility === filter.visibility;
+      const matchTag = !filter.tag || item.tags.includes(filter.tag);
+
+      return matchQuery && matchBrand && matchSeason && matchVisibility && matchTag;
+    });
+  },
+
+  findById(id: string) {
+    return read().find((item) => item.id === id) ?? null;
+  },
+
+  create(input: OutfitInput) {
+    const outfits = read();
+    const now = new Date().toISOString();
+    const next: Outfit = { id: crypto.randomUUID(), ...input, createdAt: now, updatedAt: now };
+    const updated = [next, ...outfits];
+    write(updated);
+    return next;
+  },
+
+  update(id: string, input: OutfitInput) {
+    const outfits = read();
+    let saved: Outfit | null = null;
+    const updated = outfits.map((item) => {
+      if (item.id !== id) return item;
+      saved = { ...item, ...input, updatedAt: new Date().toISOString() };
+      return saved;
+    });
+    write(updated);
+    return saved;
+  },
+
+  remove(id: string) {
+    const outfits = read().filter((item) => item.id !== id);
+    write(outfits);
+  },
+};
