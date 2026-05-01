@@ -14,20 +14,11 @@ export default function OutfitsPage() {
       <section className="mx-auto max-w-6xl">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-3xl font-bold">コーデ一覧</h1>
-          <Link href="/outfits/new" className="rounded-full bg-white px-4 py-2 text-sm text-black">
-            新規登録
-          </Link>
+          <Link href="/outfits/new" className="rounded-full bg-white px-4 py-2 text-sm text-black">新規登録</Link>
         </div>
-        <input
-          className="mb-6 w-full rounded border border-white/10 bg-white/5 p-3"
-          placeholder="検索（タイトル・説明・タグ）"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        <input className="mb-6 w-full rounded border border-white/10 bg-white/5 p-3" placeholder="検索（タイトル・説明・タグ）" value={query} onChange={(e) => setQuery(e.target.value)} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {outfits.map((outfit) => (
-            <OutfitCard key={outfit.id} outfit={outfit} />
-          ))}
+          {outfits.map((outfit) => <OutfitCard key={outfit.id} outfit={outfit} />)}
         </div>
       </section>
     </main>

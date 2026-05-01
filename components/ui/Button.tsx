@@ -7,13 +7,8 @@ export default function Button({ variant = "primary", className = "", ...props }
     variant === "primary"
       ? "bg-white text-black hover:opacity-80"
       : variant === "danger"
-        ? "bg-red-500 text-white hover:bg-red-600"
-        : "border border-white/20 text-white hover:bg-white/10";
+      ? "bg-red-500 text-white hover:bg-red-600"
+      : "border border-white/20 text-white hover:bg-white/10";
 
-  return (
-    <button
-      className={`rounded-full px-4 py-2 text-sm transition ${style} ${className}`}
-      {...props}
-    />
-  );
+  return <button className={`rounded-full px-4 py-2 text-sm transition ${style} ${className}`} {...props} />;
 }

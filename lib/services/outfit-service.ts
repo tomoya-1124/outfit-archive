@@ -1,4 +1,3 @@
-import { validateOutfitInput } from "@/features/outfits/schemas/outfit-schema";
 import { mockOutfits } from "@/lib/mock-outfits";
 import { Outfit, OutfitFilter, OutfitInput } from "@/types/outfit";
 
@@ -38,8 +37,7 @@ export const outfitService = {
         item.tags.some((tag) => tag.toLowerCase().includes(q));
 
       const matchBrand = !brand || item.brand.toLowerCase().includes(brand);
-      const matchSeason =
-        !filter.season || filter.season === "ALL" || item.season === filter.season;
+      const matchSeason = !filter.season || filter.season === "ALL" || item.season === filter.season;
       const matchVisibility =
         !filter.visibility || filter.visibility === "ALL" || item.visibility === filter.visibility;
       const matchTag = !filter.tag || item.tags.includes(filter.tag);
@@ -53,9 +51,6 @@ export const outfitService = {
   },
 
   create(input: OutfitInput) {
-    const validation = validateOutfitInput(input);
-    if (!validation.success) throw new Error(validation.errors.join(", "));
-
     const outfits = read();
     const now = new Date().toISOString();
     const next: Outfit = { id: crypto.randomUUID(), ...input, createdAt: now, updatedAt: now };
@@ -65,9 +60,6 @@ export const outfitService = {
   },
 
   update(id: string, input: OutfitInput) {
-    const validation = validateOutfitInput(input);
-    if (!validation.success) throw new Error(validation.errors.join(", "));
-
     const outfits = read();
     let saved: Outfit | null = null;
     const updated = outfits.map((item) => {
