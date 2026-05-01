@@ -23,6 +23,15 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - `lib/services/`: サービス公開層（現在はrepository委譲）
 - `types/`: domain / api / dto 型
 
+## Progress (Day1〜Day4)
+
+- **Day1**: 初期構成、Tailwind、Lint/Format、ディレクトリ雛形
+- **Day2**: 型拡張、DTO mapper、入力バリデーション
+- **Day3**: Repository interface + Local 実装 + service 委譲
+- **Day4**: 一覧フィルタ（検索/季節/公開状態）+ EmptyState/Container 追加
+
+> ※ Day2 の項目はこの README では1回だけ記載しています（重複削除済み）。
+
 ## Current Features (MVP scope)
 
 - コーデ一覧
