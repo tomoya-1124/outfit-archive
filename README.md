@@ -1,178 +1,63 @@
-# OUTFIT ARCHIVE
+# Outfit Archive v3
 
-自分専用のファッションコーデ記録アプリです。  
-日々のコーデを画像付きで保存し、一覧・詳細で振り返ることができます。
-
-公開 / 非公開の切り替え、共有URL発行、タグ管理、検索機能にも対応しています。
-
----
-
-## Demo
-
-- 本番環境（Vercel）  
-  https://outfit-archive.vercel.app
-- 公開コーデ一覧  
-  https://outfit-archive.vercel.app/public
-
----
-
-## Screenshots
-
-### Home
-
-![Home](public/readme/home.png)
-
-### Outfits
-
-![Outfits](public/readme/outfits.png)
-
-### Detail
-
-![Detail](public/readme/detail.png)
-
-### Share Page
-
-![Share](public/readme/share.png)
-
-### Public Page
-
-![Public](public/readme/public.png)
-
----
-
-## Features
-
-### 認証
-
-- ユーザー登録 / ログイン（Supabase Auth）
-- ログインユーザーのみ一覧閲覧可能
-- 所有者のみ編集 / 削除可能
-
-### コーデ管理
-
-- コーデ新規登録
-- コーデ編集
-- コーデ削除
-- 一覧表示
-- 詳細表示
-
-### 画像
-
-- 画像アップロード（Supabase Storage）
-
-### 公開機能
-
-- 公開 / 非公開切り替え
-- 共有URL発行
-- `/share/[share_id]` で公開ページ表示
-- `/public` で公開コーデ一覧表示
-
-### 検索 / 分類
-
-- ブランド検索
-- タグ登録
-- タグ表示
-- タグ検索
-
-### UI
-
-- レスポンシブ対応（スマホブラウザ）
-- ダークモードUI
-- ミニマルデザイン
-
----
+Day1〜Day2 初期構成です。  
+目的は、将来 Spring Boot + MySQL API へ移行しやすいフロント構成を整えることです。
 
 ## Tech Stack
-
-### Frontend
 
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
 
-### Backend / BaaS
+## Day1 で実施したこと
 
-- Supabase
-  - Authentication
-  - PostgreSQL Database
-  - Storage
+- プロジェクト初期化（既存 Next.js ベースを v3 用に整理）
+- Tailwind CSS 利用前提の UI 構成
+- Lint / Format スクリプト整備
+- 実務寄りディレクトリ雛形作成
 
-### Infra
+## Day2 で実施したこと
 
-- Vercel
+- 型定義を拡張（`types/common.ts`, `types/api.ts`, `types/outfit-dto.ts`）
+- DTO ⇔ Domain の mapper を追加（`features/outfits/utils/outfit-mapper.ts`）
+- 入力バリデーション関数を追加（`features/outfits/schemas/outfit-schema.ts`）
+- `outfitService` の create/update でバリデーションを適用
 
-### Development
-
-- Docker
-- Git / GitLab
-
----
-
-## Setup
-
-### 起動方法（Dockerなし）
+## Scripts
 
 ```bash
-npm install
 npm run dev
+npm run lint
+npm run format:check
+npm run format
 ```
 
-アプリ起動後:
+## Directory (initial)
 
-http://localhost:3000
-
-### 起動方法（Dockerあり）
-
-```bash
-docker compose up --build
+```txt
+app/
+components/
+  outfits/
+  ui/
+features/
+  outfits/
+    components/
+    hooks/
+    repositories/
+    usecases/
+    services/
+    constants/
+    schemas/
+    types/
+    utils/
+hooks/
+lib/
+  services/
+types/
 ```
 
----
+## Notes
 
-## Environment Variables
-
-.env.example を参考に .env.local を作成してください。
-
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-
----
-
-## Public Share Function
-
-公開設定されたコーデは共有URLで閲覧できます。
-
-例:
-
-/share/{share_id}
-
-非公開コーデは共有URLからアクセスできません。
-
----
-
-## Background
-
-WEARのような「ファッションログ体験」を、
-自分専用にシンプル化して再構築した個人開発アプリです。
-
-日々の服装記録
-スタイリングの振り返り
-季節ごとの傾向確認
-お気に入りコーデの共有
-
-を目的として開発しました。
-
-Future Improvements
-OGP対応の最適化
-公開コーデ一覧ページ
-ブランド検索
-タグ機能
-並び替え機能
-UIブラッシュアップ
-
----
-
-## Author
-
-Tomoya Abe
+- DB 接続/認証は未導入です。
+- データ層は将来 API 差し替えしやすいよう `lib/services` を使用します。
+- `react-hook-form` / `zod` 導入は、レジストリ制約が解除されたタイミングで Day3 以降に反映予定です。

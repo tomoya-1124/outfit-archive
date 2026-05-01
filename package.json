@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc --noEmit",
+    "format:check": "npx prettier --check .",
+    "format": "npx prettier --write ."
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.0",

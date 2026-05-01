@@ -49,12 +49,8 @@ export default function LoginPage() {
       <section className="mx-auto max-w-md px-6 py-16">
         <div className="mb-10 space-y-3">
           <p className="text-sm tracking-[0.3em] text-white/40">AUTH</p>
-          <h1 className="text-4xl font-bold tracking-tight">
-            {isLogin ? "ログイン" : "新規登録"}
-          </h1>
-          <p className="text-white/60">
-            Outfit Archive を自分専用で使うための認証です。
-          </p>
+          <h1 className="text-4xl font-bold tracking-tight">{isLogin ? "ログイン" : "新規登録"}</h1>
+          <p className="text-white/60">Outfit Archive を自分専用で使うための認証です。</p>
         </div>
 
         <form
@@ -102,9 +98,7 @@ export default function LoginPage() {
           onClick={() => setIsLogin(!isLogin)}
           className="mt-6 text-sm text-white/60 hover:text-white"
         >
-          {isLogin
-            ? "アカウントがない場合は新規登録"
-            : "すでにアカウントがある場合はログイン"}
+          {isLogin ? "アカウントがない場合は新規登録" : "すでにアカウントがある場合はログイン"}
         </button>
       </section>
     </main>

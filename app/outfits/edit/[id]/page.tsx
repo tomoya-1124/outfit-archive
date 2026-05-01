@@ -20,11 +20,7 @@ export default function EditOutfitPage() {
 
   useEffect(() => {
     const fetchOutfit = async () => {
-      const { data, error } = await supabase
-        .from("outfits")
-        .select("*")
-        .eq("id", id)
-        .single();
+      const { data, error } = await supabase.from("outfits").select("*").eq("id", id).single();
 
       if (error || !data) {
         alert("対象のコーデが見つかりませんでした。");
@@ -147,9 +143,7 @@ export default function EditOutfitPage() {
               placeholder="street, black, summer"
               className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none placeholder:text-white/30 focus:border-white/30"
             />
-            <p className="text-xs text-white/40">
-              カンマ区切りで入力（例: street, black, summer）
-            </p>
+            <p className="text-xs text-white/40">カンマ区切りで入力（例: street, black, summer）</p>
           </div>
 
           <div className="space-y-2">

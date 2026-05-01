@@ -48,10 +48,7 @@ export default function PublicPage() {
     <main className="min-h-screen bg-neutral-950 text-white">
       <header className="border-b border-white/10 bg-black/70 backdrop-blur">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-4 sm:px-6">
-          <Link
-            href="/"
-            className="text-xs tracking-[0.3em] text-white/80 sm:text-sm"
-          >
+          <Link href="/" className="text-xs tracking-[0.3em] text-white/80 sm:text-sm">
             OUTFIT ARCHIVE
           </Link>
 
@@ -64,9 +61,7 @@ export default function PublicPage() {
           <div className="space-y-6">
             <div className="space-y-3">
               <p className="text-sm tracking-[0.3em] text-white/40">DISCOVER</p>
-              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-                公開コーデ一覧
-              </h1>
+              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">公開コーデ一覧</h1>
               <p className="max-w-2xl text-base leading-7 text-white/65 sm:text-lg">
                 公開設定されたコーデだけを一覧で見ることができます。
                 ブランド名で検索しながら、気になるスタイルを探せます。
@@ -101,9 +96,7 @@ export default function PublicPage() {
                   />
                 </div>
 
-                <p className="text-sm text-white/45">
-                  {filteredOutfits.length}件表示
-                </p>
+                <p className="text-sm text-white/45">{filteredOutfits.length}件表示</p>
               </div>
             )}
           </div>
@@ -122,17 +115,11 @@ export default function PublicPage() {
               </div>
 
               <div className="space-y-3 p-6">
-                <p className="text-sm tracking-[0.2em] text-white/40">
-                  FEATURED LOOK
-                </p>
+                <p className="text-sm tracking-[0.2em] text-white/40">FEATURED LOOK</p>
                 <h2 className="text-3xl font-semibold tracking-tight">
-                  {loading
-                    ? "読み込み中..."
-                    : featuredOutfit?.title || "No Public Outfit"}
+                  {loading ? "読み込み中..." : featuredOutfit?.title || "No Public Outfit"}
                 </h2>
-                <p className="text-white/70">
-                  {loading ? "..." : featuredOutfit?.brand || "-"}
-                </p>
+                <p className="text-white/70">{loading ? "..." : featuredOutfit?.brand || "-"}</p>
 
                 {featuredOutfit && (
                   <Link

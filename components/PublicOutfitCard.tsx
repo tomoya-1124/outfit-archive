@@ -26,9 +26,7 @@ export default function PublicOutfitCard({ outfit }: Props) {
         <p className="text-xs tracking-[0.2em] text-white/40">{outfit.date}</p>
         <h2 className="text-lg font-semibold text-white">{outfit.title}</h2>
         <p className="text-sm text-white/70">{outfit.brand}</p>
-        <p className="line-clamp-2 text-sm text-white/50">
-          {outfit.memo || "メモはありません。"}
-        </p>
+        <p className="line-clamp-2 text-sm text-white/50">{outfit.memo || "メモはありません。"}</p>
 
         {outfit.tags && (
           <p className="line-clamp-2 text-xs text-white/35">
