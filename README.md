@@ -23,7 +23,7 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - `lib/services/`: サービス公開層（現在はrepository委譲）
 - `types/`: domain / api / dto 型
 
-## Progress (Day1〜Day12)
+## Progress (Day1〜Day14)
 
 - **Day1**: 初期構成、Tailwind、Lint/Format、ディレクトリ雛形
 - **Day2**: 型拡張、DTO mapper、入力バリデーション
@@ -37,6 +37,8 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - **Day10**: APIクライアント/エンドポイント/ApiRepositoryスキャフォールド + Repository Factory導入
 - **Day11**: 権限制御ポリシー層（canView/canEdit/canDelete）と mock user 導入
 - **Day12**: API/画面のエラーハンドリングを共通化（ApiError + ErrorState + メッセージ整形）
+- **Day13**: テスト計画/検証観点を明文化（test artifacts整備）
+- **Day14**: README運用手順・最終チェックスクリプトを整備
 
 > ※ Day2 の項目はこの README では1回だけ記載しています（重複削除済み）。
 
@@ -104,3 +106,13 @@ cp backend/.env.example backend/.env
 ```
 
 > `backend/.env` を使う場合は、実行方法（IDE / docker compose）に合わせて環境変数を読み込む設定を行ってください。
+
+## Release Readiness
+
+完成判定に向けた最終チェックは以下で実行できます。
+
+```bash
+./scripts/verify-day14.sh
+```
+
+詳細チェックリストは `test/day13-day14-checklist.md` を参照してください。
