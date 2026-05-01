@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import OutfitCard from "@/components/outfits/OutfitCard";
 import Container from "@/components/ui/Container";
 import EmptyState from "@/components/ui/EmptyState";
@@ -10,11 +10,44 @@ import Toast from "@/components/ui/Toast";
 import { listOutfits } from "@/features/outfits/usecases/list-outfits";
 import { OutfitVisibility, Season } from "@/types/outfit";
 
+const readSeason = (value: string | null): Season | "ALL" => {
+  if (value === "SPRING" || value === "SUMMER" || value === "AUTUMN" || value === "WINTER") {
+    return value;
+  }
+  return "ALL";
+};
+
+const readVisibility = (value: string | null): OutfitVisibility | "ALL" => {
+  if (value === "PUBLIC" || value === "PRIVATE") return value;
+  return "ALL";
+};
+
 export default function OutfitsPage() {
-  const [query, setQuery] = useState("");
-  const [season, setSeason] = useState<Season | "ALL">("ALL");
-  const [visibility, setVisibility] = useState<OutfitVisibility | "ALL">("ALL");
   const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [query, setQuery] = useState(params.get("q") ?? "");
+  const [season, setSeason] = useState<Season | "ALL">(readSeason(params.get("season")));
+  const [visibility, setVisibility] = useState<OutfitVisibility | "ALL">(
+    readVisibility(params.get("visibility")),
+  );
+
+  useEffect(() => {
+    const next = new URLSearchParams(params.toString());
+
+    if (query) next.set("q", query);
+    else next.delete("q");
+
+    if (season !== "ALL") next.set("season", season);
+    else next.delete("season");
+
+    if (visibility !== "ALL") next.set("visibility", visibility);
+    else next.delete("visibility");
+
+    const queryString = next.toString();
+    router.replace(queryString ? `${pathname}?${queryString}` : pathname);
+  }, [query, season, visibility, router, pathname]);
 
   const outfits = useMemo(
     () => listOutfits({ query, season, visibility }),

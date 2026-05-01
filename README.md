@@ -23,7 +23,7 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - `lib/services/`: サービス公開層（現在はrepository委譲）
 - `types/`: domain / api / dto 型
 
-## Progress (Day1〜Day7)
+## Progress (Day1〜Day10)
 
 - **Day1**: 初期構成、Tailwind、Lint/Format、ディレクトリ雛形
 - **Day2**: 型拡張、DTO mapper、入力バリデーション
@@ -32,6 +32,9 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - **Day5**: 詳細表示コンポーネント分割 + 詳細/編集の not-found UX 改善
 - **Day6**: UseCase 層を追加（create/update/delete/get/list）し、ページから直接service依存を排除
 - **Day7**: 削除確認ダイアログ + 操作完了トースト（作成/更新/削除）を追加
+- **Day8**: 一覧フィルタとURLクエリを同期（q/season/visibility）
+- **Day9**: フォームのレスポンシブ最適化（入力レイアウトを2カラム化）
+- **Day10**: APIクライアント/エンドポイント/ApiRepositoryスキャフォールド + Repository Factory導入
 
 > ※ Day2 の項目はこの README では1回だけ記載しています（重複削除済み）。
 

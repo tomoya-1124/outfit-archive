@@ -1,6 +1,6 @@
-import { LocalOutfitRepository } from "@/features/outfits/repositories/local-outfit-repository";
 import { OutfitRepository } from "@/features/outfits/repositories/outfit-repository";
+import { createOutfitRepository } from "@/lib/services/repository-factory";
 
-const repository: OutfitRepository = new LocalOutfitRepository();
+const repository: OutfitRepository = createOutfitRepository();
 
 export const outfitService = repository;

@@ -30,26 +30,30 @@ export default function OutfitForm({
 
   return (
     <form className="space-y-4" onSubmit={submit}>
-      <input
-        className="w-full rounded border bg-white/5 p-3"
-        placeholder="タイトル"
-        value={form.title}
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
-        required
-      />
-      <input
-        className="w-full rounded border bg-white/5 p-3"
-        placeholder="ブランド"
-        value={form.brand}
-        onChange={(e) => setForm({ ...form, brand: e.target.value })}
-        required
-      />
+      <div className="grid gap-4 md:grid-cols-2">
+        <input
+          className="w-full rounded border bg-white/5 p-3"
+          placeholder="タイトル"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+          required
+        />
+        <input
+          className="w-full rounded border bg-white/5 p-3"
+          placeholder="ブランド"
+          value={form.brand}
+          onChange={(e) => setForm({ ...form, brand: e.target.value })}
+          required
+        />
+      </div>
+
       <textarea
         className="w-full rounded border bg-white/5 p-3"
         placeholder="説明"
         value={form.description}
         onChange={(e) => setForm({ ...form, description: e.target.value })}
       />
+
       <input
         className="w-full rounded border bg-white/5 p-3"
         placeholder="画像URL"
@@ -57,17 +61,30 @@ export default function OutfitForm({
         onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
         required
       />
-      <select
-        className="w-full rounded border bg-neutral-900 p-3"
-        value={form.season}
-        onChange={(e) => setForm({ ...form, season: e.target.value as Season })}
-      >
-        {seasons.map((season) => (
-          <option key={season} value={season}>
-            {season}
-          </option>
-        ))}
-      </select>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <select
+          className="w-full rounded border bg-neutral-900 p-3"
+          value={form.season}
+          onChange={(e) => setForm({ ...form, season: e.target.value as Season })}
+        >
+          {seasons.map((season) => (
+            <option key={season} value={season}>
+              {season}
+            </option>
+          ))}
+        </select>
+
+        <select
+          className="w-full rounded border bg-neutral-900 p-3"
+          value={form.visibility}
+          onChange={(e) => setForm({ ...form, visibility: e.target.value as "PUBLIC" | "PRIVATE" })}
+        >
+          <option value="PRIVATE">PRIVATE</option>
+          <option value="PUBLIC">PUBLIC</option>
+        </select>
+      </div>
+
       <input
         className="w-full rounded border bg-white/5 p-3"
         placeholder="タグ（カンマ区切り）"
@@ -82,14 +99,7 @@ export default function OutfitForm({
           })
         }
       />
-      <select
-        className="w-full rounded border bg-neutral-900 p-3"
-        value={form.visibility}
-        onChange={(e) => setForm({ ...form, visibility: e.target.value as "PUBLIC" | "PRIVATE" })}
-      >
-        <option value="PRIVATE">PRIVATE</option>
-        <option value="PUBLIC">PUBLIC</option>
-      </select>
+
       <Button type="submit">保存</Button>
     </form>
   );
