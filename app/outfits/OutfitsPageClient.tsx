@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import OutfitCard from "@/components/outfits/OutfitCard";
 import Container from "@/components/ui/Container";
 import EmptyState from "@/components/ui/EmptyState";
@@ -22,19 +22,30 @@ const readVisibility = (value: string | null): OutfitVisibility | "ALL" => {
   return "ALL";
 };
 
-export default function OutfitsPageClient() {
-  const params = useSearchParams();
+type OutfitsPageClientProps = {
+  initialQuery: string;
+  initialSeason: string;
+  initialVisibility: string;
+  initialMessage?: string;
+};
+
+export default function OutfitsPageClient({
+  initialQuery,
+  initialSeason,
+  initialVisibility,
+  initialMessage,
+}: OutfitsPageClientProps) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [query, setQuery] = useState(params.get("q") ?? "");
-  const [season, setSeason] = useState<Season | "ALL">(readSeason(params.get("season")));
+  const [query, setQuery] = useState(initialQuery);
+  const [season, setSeason] = useState<Season | "ALL">(readSeason(initialSeason));
   const [visibility, setVisibility] = useState<OutfitVisibility | "ALL">(
-    readVisibility(params.get("visibility")),
+    readVisibility(initialVisibility),
   );
 
   useEffect(() => {
-    const next = new URLSearchParams(params.toString());
+    const next = new URLSearchParams();
 
     if (query) next.set("q", query);
     else next.delete("q");
@@ -47,14 +58,14 @@ export default function OutfitsPageClient() {
 
     const queryString = next.toString();
     router.replace(queryString ? `${pathname}?${queryString}` : pathname);
-  }, [query, season, visibility, router, pathname, params]);
+  }, [query, season, visibility, router, pathname]);
 
   const outfits = useMemo(
     () => listOutfits({ query, season, visibility }),
     [query, season, visibility],
   );
 
-  const message = params.get("message");
+  const message = initialMessage;
 
   return (
     <main className="min-h-screen bg-neutral-950 py-12 text-white">
