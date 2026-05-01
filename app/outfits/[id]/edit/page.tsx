@@ -1,12 +1,12 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import OutfitDetail from "@/components/outfits/OutfitDetail";
+import OutfitForm from "@/components/outfits/OutfitForm";
 import Container from "@/components/ui/Container";
 import EmptyState from "@/components/ui/EmptyState";
 import { outfitService } from "@/lib/services/outfit-service";
 
-export default function OutfitDetailPage() {
+export default function EditOutfitPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const outfit = outfitService.findById(params.id);
@@ -16,19 +16,22 @@ export default function OutfitDetailPage() {
       <Container>
         {!outfit ? (
           <EmptyState
-            title="コーデが見つかりません"
-            description="削除された可能性があります。"
+            title="編集対象が見つかりません"
+            description="対象コーデが存在しないため、編集できません。"
             actionLabel="一覧へ戻る"
             actionHref="/outfits"
           />
         ) : (
-          <OutfitDetail
-            outfit={outfit}
-            onDelete={() => {
-              outfitService.remove(outfit.id);
-              router.push("/outfits");
-            }}
-          />
+          <section className="mx-auto max-w-2xl space-y-6">
+            <h1 className="text-3xl font-bold">編集</h1>
+            <OutfitForm
+              initial={outfit}
+              onSubmit={(input) => {
+                outfitService.update(outfit.id, input);
+                router.push(`/outfits/${outfit.id}`);
+              }}
+            />
+          </section>
         )}
       </Container>
     </main>
