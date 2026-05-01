@@ -85,3 +85,21 @@ docker compose up --build
 ### 備考
 
 - 現時点の `ApiOutfitRepository` はスキャフォールドのため、フロントを `api` モードに切り替える前に実装が必要です。
+
+## Environment Templates
+
+以下をコピペして環境変数を作成してください。
+
+### Frontend (`.env.local`)
+
+```bash
+cp .env.example .env.local
+```
+
+### Backend (`backend/.env`)
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+> `backend/.env` を使う場合は、実行方法（IDE / docker compose）に合わせて環境変数を読み込む設定を行ってください。
