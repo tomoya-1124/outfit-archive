@@ -5,17 +5,20 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import OutfitDetail from "@/components/outfits/OutfitDetail";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import Container from "@/components/ui/Container";
+import ErrorState from "@/components/ui/ErrorState";
 import EmptyState from "@/components/ui/EmptyState";
 import Toast from "@/components/ui/Toast";
 import { canDeleteOutfit, canViewOutfit } from "@/features/outfits/policies/outfit-policy";
 import { deleteOutfit } from "@/features/outfits/usecases/delete-outfit";
 import { getOutfit } from "@/features/outfits/usecases/get-outfit";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { toErrorMessage } from "@/lib/api/errors";
 
 export default function OutfitDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [error, setError] = useState("");
   const searchParams = useSearchParams();
   const outfit = getOutfit(params.id);
   const user = getCurrentUser();
@@ -47,11 +50,17 @@ export default function OutfitDetailPage() {
             description="この操作は取り消せません。"
             onCancel={() => setOpenConfirm(false)}
             onConfirm={() => {
-              deleteOutfit(outfit.id);
-              router.push("/outfits?message=deleted");
+              try {
+                deleteOutfit(outfit.id);
+                router.push("/outfits?message=deleted");
+              } catch (e) {
+                setError(toErrorMessage(e));
+                setOpenConfirm(false);
+              }
             }}
           />
         ) : null}
+        {error ? <ErrorState message={error} /> : null}
         {searchParams.get("message") === "created" ? (
           <Toast message="コーデを登録しました" />
         ) : null}

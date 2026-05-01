@@ -1,9 +1,11 @@
+import { ApiError } from "@/lib/api/errors";
+
 export class ApiClient {
   constructor(private readonly baseUrl: string) {}
 
   async get<T>(path: string): Promise<T> {
     const res = await fetch(`${this.baseUrl}${path}`, { method: "GET" });
-    if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
+    if (!res.ok) throw new ApiError(`GET ${path} failed`, res.status, await res.text());
     return res.json() as Promise<T>;
   }
 
@@ -13,7 +15,7 @@ export class ApiClient {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (!res.ok) throw new Error(`POST ${path} failed: ${res.status}`);
+    if (!res.ok) throw new ApiError(`POST ${path} failed`, res.status, await res.text());
     return res.json() as Promise<T>;
   }
 
@@ -23,12 +25,12 @@ export class ApiClient {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (!res.ok) throw new Error(`PUT ${path} failed: ${res.status}`);
+    if (!res.ok) throw new ApiError(`PUT ${path} failed`, res.status, await res.text());
     return res.json() as Promise<T>;
   }
 
   async delete(path: string): Promise<void> {
     const res = await fetch(`${this.baseUrl}${path}`, { method: "DELETE" });
-    if (!res.ok) throw new Error(`DELETE ${path} failed: ${res.status}`);
+    if (!res.ok) throw new ApiError(`DELETE ${path} failed`, res.status, await res.text());
   }
 }

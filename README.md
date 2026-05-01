@@ -23,7 +23,7 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - `lib/services/`: サービス公開層（現在はrepository委譲）
 - `types/`: domain / api / dto 型
 
-## Progress (Day1〜Day11)
+## Progress (Day1〜Day12)
 
 - **Day1**: 初期構成、Tailwind、Lint/Format、ディレクトリ雛形
 - **Day2**: 型拡張、DTO mapper、入力バリデーション
@@ -36,6 +36,7 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - **Day9**: フォームのレスポンシブ最適化（入力レイアウトを2カラム化）
 - **Day10**: APIクライアント/エンドポイント/ApiRepositoryスキャフォールド + Repository Factory導入
 - **Day11**: 権限制御ポリシー層（canView/canEdit/canDelete）と mock user 導入
+- **Day12**: API/画面のエラーハンドリングを共通化（ApiError + ErrorState + メッセージ整形）
 
 > ※ Day2 の項目はこの README では1回だけ記載しています（重複削除済み）。
 
