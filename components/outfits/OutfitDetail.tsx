@@ -4,9 +4,13 @@ import Button from "@/components/ui/Button";
 
 export default function OutfitDetail({
   outfit,
+  canEdit,
+  canDelete,
   onDelete,
 }: {
   outfit: Outfit;
+  canEdit: boolean;
+  canDelete: boolean;
   onDelete: () => void;
 }) {
   return (
@@ -25,15 +29,19 @@ export default function OutfitDetail({
         tags: {outfit.tags.length > 0 ? outfit.tags.join(", ") : "なし"}
       </p>
       <div className="flex gap-3">
-        <Link
-          href={`/outfits/${outfit.id}/edit`}
-          className="rounded-full border border-white/20 px-4 py-2 text-sm"
-        >
-          編集
-        </Link>
-        <Button variant="danger" onClick={onDelete}>
-          削除
-        </Button>
+        {canEdit ? (
+          <Link
+            href={`/outfits/${outfit.id}/edit`}
+            className="rounded-full border border-white/20 px-4 py-2 text-sm"
+          >
+            編集
+          </Link>
+        ) : null}
+        {canDelete ? (
+          <Button variant="danger" onClick={onDelete}>
+            削除
+          </Button>
+        ) : null}
       </div>
     </section>
   );

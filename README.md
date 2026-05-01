@@ -23,7 +23,7 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - `lib/services/`: サービス公開層（現在はrepository委譲）
 - `types/`: domain / api / dto 型
 
-## Progress (Day1〜Day10)
+## Progress (Day1〜Day11)
 
 - **Day1**: 初期構成、Tailwind、Lint/Format、ディレクトリ雛形
 - **Day2**: 型拡張、DTO mapper、入力バリデーション
@@ -35,6 +35,7 @@ SEとしての市場価値向上を意識した、実務寄り設計のポート
 - **Day8**: 一覧フィルタとURLクエリを同期（q/season/visibility）
 - **Day9**: フォームのレスポンシブ最適化（入力レイアウトを2カラム化）
 - **Day10**: APIクライアント/エンドポイント/ApiRepositoryスキャフォールド + Repository Factory導入
+- **Day11**: 権限制御ポリシー層（canView/canEdit/canDelete）と mock user 導入
 
 > ※ Day2 の項目はこの README では1回だけ記載しています（重複削除済み）。
 
@@ -66,3 +67,21 @@ npm run format
 
 - DB接続・認証は未導入（v3初期フェーズ）。
 - v2資産はバックアップ済みで、v3実装を優先しています。
+
+## Backend (Spring Boot + MySQL minimal)
+
+`backend/` に Spring Boot の最小構成を追加しました。
+
+### 起動（Docker Compose）
+
+```bash
+docker compose up --build
+```
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8080/api/outfits
+- MySQL: localhost:3306
+
+### 備考
+
+- 現時点の `ApiOutfitRepository` はスキャフォールドのため、フロントを `api` モードに切り替える前に実装が必要です。

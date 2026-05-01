@@ -7,8 +7,10 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import Container from "@/components/ui/Container";
 import EmptyState from "@/components/ui/EmptyState";
 import Toast from "@/components/ui/Toast";
+import { canDeleteOutfit, canViewOutfit } from "@/features/outfits/policies/outfit-policy";
 import { deleteOutfit } from "@/features/outfits/usecases/delete-outfit";
 import { getOutfit } from "@/features/outfits/usecases/get-outfit";
+import { getCurrentUser } from "@/lib/auth/current-user";
 
 export default function OutfitDetailPage() {
   const params = useParams<{ id: string }>();
@@ -16,11 +18,14 @@ export default function OutfitDetailPage() {
   const [openConfirm, setOpenConfirm] = useState(false);
   const searchParams = useSearchParams();
   const outfit = getOutfit(params.id);
+  const user = getCurrentUser();
+  const canView = outfit ? canViewOutfit(user, outfit) : false;
+  const canDelete = outfit ? canDeleteOutfit(user, outfit) : false;
 
   return (
     <main className="min-h-screen bg-neutral-950 px-6 py-12 text-white">
       <Container>
-        {!outfit ? (
+        {!outfit || !canView ? (
           <EmptyState
             title="コーデが見つかりません"
             description="削除された可能性があります。"
@@ -28,10 +33,15 @@ export default function OutfitDetailPage() {
             actionHref="/outfits"
           />
         ) : (
-          <OutfitDetail outfit={outfit} onDelete={() => setOpenConfirm(true)} />
+          <OutfitDetail
+            outfit={outfit}
+            canEdit={canDelete}
+            canDelete={canDelete}
+            onDelete={() => setOpenConfirm(true)}
+          />
         )}
 
-        {outfit && openConfirm ? (
+        {outfit && canDelete && openConfirm ? (
           <ConfirmDialog
             title="このコーデを削除しますか？"
             description="この操作は取り消せません。"
