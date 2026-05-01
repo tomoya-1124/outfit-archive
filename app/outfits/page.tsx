@@ -2,21 +2,26 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import OutfitCard from "@/components/outfits/OutfitCard";
-import EmptyState from "@/components/ui/EmptyState";
 import Container from "@/components/ui/Container";
-import { outfitService } from "@/lib/services/outfit-service";
+import EmptyState from "@/components/ui/EmptyState";
+import Toast from "@/components/ui/Toast";
+import { listOutfits } from "@/features/outfits/usecases/list-outfits";
 import { OutfitVisibility, Season } from "@/types/outfit";
 
 export default function OutfitsPage() {
   const [query, setQuery] = useState("");
   const [season, setSeason] = useState<Season | "ALL">("ALL");
   const [visibility, setVisibility] = useState<OutfitVisibility | "ALL">("ALL");
+  const params = useSearchParams();
 
   const outfits = useMemo(
-    () => outfitService.list({ query, season, visibility }),
+    () => listOutfits({ query, season, visibility }),
     [query, season, visibility],
   );
+
+  const message = params.get("message");
 
   return (
     <main className="min-h-screen bg-neutral-950 py-12 text-white">
@@ -71,6 +76,8 @@ export default function OutfitsPage() {
             ))}
           </div>
         )}
+
+        {message === "deleted" ? <Toast message="コーデを削除しました" /> : null}
       </Container>
     </main>
   );

@@ -4,12 +4,13 @@ import { useParams, useRouter } from "next/navigation";
 import OutfitForm from "@/components/outfits/OutfitForm";
 import Container from "@/components/ui/Container";
 import EmptyState from "@/components/ui/EmptyState";
-import { outfitService } from "@/lib/services/outfit-service";
+import { getOutfit } from "@/features/outfits/usecases/get-outfit";
+import { updateOutfit } from "@/features/outfits/usecases/update-outfit";
 
 export default function EditOutfitPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const outfit = outfitService.findById(params.id);
+  const outfit = getOutfit(params.id);
 
   return (
     <main className="min-h-screen bg-neutral-950 px-6 py-12 text-white">
@@ -27,8 +28,8 @@ export default function EditOutfitPage() {
             <OutfitForm
               initial={outfit}
               onSubmit={(input) => {
-                outfitService.update(outfit.id, input);
-                router.push(`/outfits/${outfit.id}`);
+                updateOutfit(outfit.id, input);
+                router.push(`/outfits/${outfit.id}?message=updated`);
               }}
             />
           </section>

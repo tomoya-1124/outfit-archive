@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import OutfitForm from "@/components/outfits/OutfitForm";
-import { outfitService } from "@/lib/services/outfit-service";
+import { createOutfit } from "@/features/outfits/usecases/create-outfit";
 
 export default function NewOutfitPage() {
   const router = useRouter();
@@ -13,8 +13,8 @@ export default function NewOutfitPage() {
         <h1 className="text-3xl font-bold">新規登録</h1>
         <OutfitForm
           onSubmit={(input) => {
-            const created = outfitService.create(input);
-            router.push(`/outfits/${created.id}`);
+            const created = createOutfit(input);
+            router.push(`/outfits/${created.id}?message=created`);
           }}
         />
       </section>
