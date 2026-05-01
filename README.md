@@ -23,6 +23,26 @@ Day1〜Day2 初期構成です。
 - 入力バリデーション関数を追加（`features/outfits/schemas/outfit-schema.ts`）
 - `outfitService` の create/update でバリデーションを適用
 
+## Day3 で実施したこと
+
+- Repository interface を追加（`features/outfits/repositories/outfit-repository.ts`）
+- Local 実装を追加（`features/outfits/repositories/local-outfit-repository.ts`）
+- `outfitService` を Repository 実装に委譲する形へ変更（DI差し替えしやすい構造）
+
+## Scripts
+
+- プロジェクト初期化（既存 Next.js ベースを v3 用に整理）
+- Tailwind CSS 利用前提の UI 構成
+- Lint / Format スクリプト整備
+- 実務寄りディレクトリ雛形作成
+
+## Day2 で実施したこと
+
+- 型定義を拡張（`types/common.ts`, `types/api.ts`, `types/outfit-dto.ts`）
+- DTO ⇔ Domain の mapper を追加（`features/outfits/utils/outfit-mapper.ts`）
+- 入力バリデーション関数を追加（`features/outfits/schemas/outfit-schema.ts`）
+- `outfitService` の create/update でバリデーションを適用
+
 ## Scripts
 
 SEとしての市場価値向上を意識した、実務寄り設計のポートフォリオアプリです。
