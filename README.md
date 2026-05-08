@@ -1,118 +1,142 @@
+
 # Outfit Archive v3
 
-SEとしての市場価値向上を意識した、実務寄り設計のポートフォリオアプリです。  
-フロントは **Next.js(App Router) + TypeScript + Tailwind CSS**、初期段階は **mock/localStorage** で開発し、将来的に Spring Boot + MySQL API へ移行しやすい構成を目指しています。
+Outfit Archive v3 is a full-stack portfolio application for recording and managing daily outfits.
+
+This project was developed as a practical SE portfolio, focusing not only on UI implementation but also on layered architecture, API integration, database connection, deployment, and maintainability.
+
+## Live Demo
+
+- Frontend: Vercel
+- Backend API: https://outfit-archive-backend.onrender.com
+- Database: Railway MySQL
 
 ## Tech Stack
 
-- Next.js (App Router)
+### Frontend
+- Next.js App Router
 - TypeScript
 - Tailwind CSS
-- localStorage (mock repository)
+- Vercel
 
-## Architecture (v3)
+### Backend
+- Java
+- Spring Boot
+- Spring Data JPA
+- MySQL Connector/J
+- Render
 
-- `app/`: 画面ルーティング
-- `components/`: UIコンポーネント
-  - `components/outfits/`: outfit機能向けUI
-  - `components/ui/`: 汎用UI
-- `features/outfits/`: 機能単位のロジック
-  - `repositories/`: Repository interface / local実装
-  - `schemas/`: 入力バリデーション
-  - `utils/`: mapper等
-- `lib/services/`: サービス公開層（現在はrepository委譲）
-- `types/`: domain / api / dto 型
+### Database
+- MySQL
+- Railway
 
-## Progress (Day1〜Day14)
+## Features
 
-- **Day1**: 初期構成、Tailwind、Lint/Format、ディレクトリ雛形
-- **Day2**: 型拡張、DTO mapper、入力バリデーション
-- **Day3**: Repository interface + Local 実装 + service 委譲
-- **Day4**: 一覧フィルタ（検索/季節/公開状態）+ EmptyState/Container 追加
-- **Day5**: 詳細表示コンポーネント分割 + 詳細/編集の not-found UX 改善
-- **Day6**: UseCase 層を追加（create/update/delete/get/list）し、ページから直接service依存を排除
-- **Day7**: 削除確認ダイアログ + 操作完了トースト（作成/更新/削除）を追加
-- **Day8**: 一覧フィルタとURLクエリを同期（q/season/visibility）
-- **Day9**: フォームのレスポンシブ最適化（入力レイアウトを2カラム化）
-- **Day10**: APIクライアント/エンドポイント/ApiRepositoryスキャフォールド + Repository Factory導入
-- **Day11**: 権限制御ポリシー層（canView/canEdit/canDelete）と mock user 導入
-- **Day12**: API/画面のエラーハンドリングを共通化（ApiError + ErrorState + メッセージ整形）
-- **Day13**: テスト計画/検証観点を明文化（test artifacts整備）
-- **Day14**: README運用手順・最終チェックスクリプトを整備
+- Outfit list
+- Outfit detail
+- Create outfit
+- Edit outfit
+- Delete outfit
+- Search and filtering
+- Responsive UI
+- API-based data access
+- MySQL persistence
 
-> ※ Day2 の項目はこの README では1回だけ記載しています（重複削除済み）。
+## Architecture
 
-## Current Features (MVP scope)
+```mermaid
+flowchart TD
 
-- コーデ一覧
-- コーデ詳細
-- 新規登録
-- 編集
-- 削除
-- 検索/絞り込み（キーワード・季節・公開状態）
-- レスポンシブUI
+    U[User]
+    F[Frontend<br/>Next.js / Vercel]
+    B[Backend API<br/>Spring Boot / Render]
+    D[(MySQL<br/>Railway)]
 
-## Scripts
-
-```bash
-npm run dev
-npm run lint
-npm run format:check
-npm run format
+    U -->|HTTPS| F
+    F -->|REST API| B
+    B -->|JPA / JDBC| D
 ```
 
-## API Migration Plan
+## Project Structure
 
-現在は `LocalOutfitRepository` を利用しています。  
-将来は `OutfitRepository` interface を実装した `ApiOutfitRepository`（Spring Boot API接続）を追加し、バインディング差し替えで移行する想定です。
+```text
+app/                  # Next.js routes
+components/           # UI components
+features/outfits/     # outfit feature logic
+lib/                  # shared services and API client
+types/                # TypeScript types
+backend/              # Spring Boot backend
+```
 
-## Notes
+## Development Highlights
 
-- DB接続・認証は未導入（v3初期フェーズ）。
-- v2資産はバックアップ済みで、v3実装を優先しています。
+* Designed the frontend with feature-based directory structure
+* Introduced repository/service layers to make data access replaceable
+* Started with localStorage/mock data, then migrated toward API-based architecture
+* Built a Spring Boot backend with JPA
+* Connected the backend to a MySQL database
+* Deployed frontend, backend, and database separately
+* Resolved production deployment issues around environment variables, JDBC URL, external DB access, and port binding
 
-## Backend (Spring Boot + MySQL minimal)
+## Local Development
 
-`backend/` に Spring Boot の最小構成を追加しました。
+### Frontend
 
-### 起動（Docker Compose）
+```bash
+npm install
+npm run dev
+```
+
+### Backend
+
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+### Docker
 
 ```bash
 docker compose up --build
 ```
 
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8080/api/outfits
-- MySQL: localhost:3306
+## Environment Variables
 
-### 備考
+### Frontend
 
-- 現時点の `ApiOutfitRepository` はスキャフォールドのため、フロントを `api` モードに切り替える前に実装が必要です。
-
-## Environment Templates
-
-以下をコピペして環境変数を作成してください。
-
-### Frontend (`.env.local`)
-
-```bash
-cp .env.example .env.local
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080
 ```
 
-### Backend (`backend/.env`)
+### Backend
 
-```bash
-cp backend/.env.example backend/.env
+```env
+SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/outfit_archive
+SPRING_DATASOURCE_USERNAME=outfit
+SPRING_DATASOURCE_PASSWORD=outfit
 ```
 
-> `backend/.env` を使う場合は、実行方法（IDE / docker compose）に合わせて環境変数を読み込む設定を行ってください。
+For production, the backend uses Render environment variables and connects to Railway MySQL.
 
-## Release Readiness
+## API
 
-完成判定に向けた最終チェックは以下で実行できます。
+Example endpoint:
 
-```bash
-./scripts/verify-day14.sh
+```text
+GET /api/outfits
 ```
 
-詳細チェックリストは `test/day13-day14-checklist.md` を参照してください。
+## Purpose
+
+This project was created to demonstrate practical full-stack development skills as a junior software engineer, including frontend implementation, backend API design, database integration, deployment, and troubleshooting.
+
+## Future Improvements
+
+* Authentication
+* User-based authorization
+* Image upload
+* Public/private outfit sharing
+* Test coverage
+* CI/CD improvements
+
+
