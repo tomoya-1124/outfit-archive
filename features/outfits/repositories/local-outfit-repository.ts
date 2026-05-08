@@ -7,12 +7,22 @@ const STORAGE_KEY = "outfit-archive-v3";
 
 const isBrowser = () => typeof window !== "undefined";
 
+const mergeWithMockOutfits = (outfits: Outfit[]): Outfit[] => {
+  const outfitIds = new Set(outfits.map((outfit) => outfit.id));
+  const missingMockOutfits = mockOutfits.filter((outfit) => !outfitIds.has(outfit.id));
+
+  return missingMockOutfits.length > 0 ? [...outfits, ...missingMockOutfits] : outfits;
+};
+
 const read = (): Outfit[] => {
   if (!isBrowser()) return mockOutfits;
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) return mockOutfits;
   try {
-    return JSON.parse(stored) as Outfit[];
+    const storedOutfits = JSON.parse(stored) as Outfit[];
+    const outfits = mergeWithMockOutfits(storedOutfits);
+    if (outfits.length !== storedOutfits.length) write(outfits);
+    return outfits;
   } catch {
     return mockOutfits;
   }
